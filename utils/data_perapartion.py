@@ -6,8 +6,8 @@ import json
 import soundfile as sf
 
 
-load_dotenv()
-hf_token = os.getenv("HF_TOKEN")
+print(load_dotenv(".env"))
+hf_token = os.getenv("HF_TOKEN_")
 login(token=hf_token)
 
 
@@ -20,7 +20,11 @@ def load_export_dataset(
     folder_split: str = "train",
     out_manifest: str = "train.json",
 ):
-    ds = load_dataset(dataset_name, name=name, split=dataset_split)
+    ds = (
+        load_dataset(dataset_name, name=name, split=dataset_split)
+        if name
+        else load_dataset(dataset_name, split=dataset_split)
+    )
     os.makedirs(f"data/{folder_split}", exist_ok=True)
     with open(out_manifest, "w") as f:
         for i, item in enumerate(ds):

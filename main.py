@@ -1,12 +1,3 @@
-from configs.configs import warmup_steps
-from configs.configs import weight_decay
-from configs.configs import betas
-from configs.configs import OPTIM_NAME
-from configs.configs import MAX_EPOCHS
-from configs.configs import DEVICES
-from configs.configs import CTC_LOSS_WEIGHT
-from configs.configs import VALIDATION_MANIFEST_FILEPATH
-from configs.configs import TRAIN_MANIFEST_FILEPATH
 from configs.configs import (
     MANIFESTS,
     TOKENIZER_DIR,
@@ -14,14 +5,24 @@ from configs.configs import (
     TOKENIZER,
     SPE_TYPE,
     lr,
+    warmup_steps,
+    weight_decay,
+    betas,
+    OPTIM_NAME,
+    MAX_EPOCHS,
+    CTC_LOSS_WEIGHT,
+    VALIDATION_MANIFEST_FILEPATH,
+    TRAIN_MANIFEST_FILEPATH,
+    DEVICES,
 )
 import subprocess
-from utils.data_preparation import load_export_dataset
+from utils.data_perapartion import load_export_dataset
 from configs import configs
+from tqdm import tqdm
 
 
 def main():
-    for di in configs.datasets_info:
+    for di in tqdm(configs.datasets_info):
         load_export_dataset(
             dataset_name=di["ds_name"],
             name=di["name"],
@@ -59,3 +60,7 @@ def main():
     model.optim.sched.warmup_steps={warmup_steps}"""
 
     subprocess.run(train_cmd, shell=True, check=True)
+
+
+if __name__ == "__main__":
+    main()
