@@ -19,12 +19,15 @@ def load_export_dataset(
     audio_column: str = "audio",
     folder_split: str = "train",
     out_manifest: str = "train.json",
+    select_size: int = -1,
 ):
     ds = (
         load_dataset(dataset_name, name=name, split=dataset_split)
         if name
         else load_dataset(dataset_name, split=dataset_split)
     )
+    if select_size > 0:
+        ds = ds.select(range(select_size))
     os.makedirs(f"data/{folder_split}", exist_ok=True)
     with open(out_manifest, "w") as f:
         for i, item in enumerate(ds):

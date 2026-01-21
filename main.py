@@ -1,3 +1,4 @@
+from configs.configs import TOKENIZER_BPE_DIR
 from configs.configs import (
     MANIFESTS,
     TOKENIZER_DIR,
@@ -31,10 +32,11 @@ def main():
             audio_column=di["audio_cl"],
             folder_split=di["fl_split"],
             out_manifest=di["out_manifest"],
+            select_size=di["size"],
         )
 
     tokenizer_cmd = f"""
-    python utils.process_asr_text_tokenizer.py \
+    python utils/asr_text_tokenizer.py \
         --manifest {",".join([m for m in MANIFESTS])} \
         --data_root "{TOKENIZER_DIR}" \
         --vocab_size {VOCAB_SIZE} \
@@ -45,10 +47,10 @@ def main():
 
     subprocess.run(tokenizer_cmd, shell=True, check=True)
 
-    train_cmd = f"""python speech_to_text_hybrid_rnnt_ctc_bpe.py \
+    train_cmd = f"""python utils/speech_to_text_hybrid_RNNT_CTC_bpe.py \
     model.train_ds.manifest_filepath={TRAIN_MANIFEST_FILEPATH} \
     model.validation_ds.manifest_filepath={VALIDATION_MANIFEST_FILEPATH} \
-    model.tokenizer.dir={TOKENIZER_DIR} \
+    model.tokenizer.dir={TOKENIZER_BPE_DIR} \
     model.tokenizer.type={SPE_TYPE} \
     model.aux_ctc.ctc_loss_weight={CTC_LOSS_WEIGHT} \
     trainer.devices={DEVICES} \
