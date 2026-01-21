@@ -1,3 +1,6 @@
+from configs.configs import WANDB_PRO_NAME
+from configs.configs import WANDB_EXP_NAME
+from configs.configs import WANDB_LOGGER
 from configs.configs import TOKENIZER_BPE_DIR
 from configs.configs import (
     MANIFESTS,
@@ -59,7 +62,11 @@ def main():
     model.optim.lr={lr} \
     model.optim.betas={betas} \
     model.optim.weight_decay={weight_decay} \
-    model.optim.sched.warmup_steps={warmup_steps}"""
+    model.optim.sched.warmup_steps={warmup_steps}
+    exp_manager.create_wandb_logger={WANDB_LOGGER} 
+    exp_manager.wandb_logger_kwargs.name={WANDB_EXP_NAME} \
+    exp_manager.wandb_logger_kwargs.project={WANDB_PRO_NAME}
+    """
 
     subprocess.run(train_cmd, shell=True, check=True)
 

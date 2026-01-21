@@ -139,3 +139,7 @@ lr = 0.001
 betas = "[0.9,0.999]"
 weight_decay = 0.0001
 warmup_steps = 2000
+
+WANDB_LOGGER = True
+WANDB_EXP_NAME = "nemo_asr_exp"
+WANDB_PRO_NAME = "moulsot_asr"
